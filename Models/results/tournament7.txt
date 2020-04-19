@@ -1,0 +1,18 @@
+Best players (from last to best):
+
+1:	10	epsilon = 0.8, 	trained vs RandomvsSelf 	10000	epochs
+2:	15	epsilon = 0.9, 	trained vs Random 		10000	epochs
+3:	20	epsilon = 1.0, 	trained vs RandomvsSelf 	10000	epochs
+4:	20	epsilon = 1.0, 	trained vs SelfvsRandom 	10000	epochs
+5:	20	epsilon = 0.8, 	trained vs Random 		10000	epochs
+6:	35	epsilon = 0.9, 	trained vs RandomvsSelf 	60000	epochs
+7:	40	epsilon = 0.2, 	trained vs Self 		250000	epochs
+8:	45	epsilon = 0.2, 	trained vs SelfvsRandom 	150000	epochs
+9:	45	epsilon = 1.0, 	trained vs Random 		10000	epochs
+10:	45	epsilon = 0.8, 	trained vs SelfvsRandom 	200000	epochs
+11:	55	epsilon = 0.9, 	trained vs Self 		110000	epochs
+12:	65	epsilon = 0.9, 	trained vs SelfvsRandom 	250000	epochs
+13:	85	epsilon = 1.0, 	trained vs Self 		250000	epochs
+14:	95	epsilon = 0.2, 	trained vs Random 		250000	epochs
+15:	130	epsilon = 0.8, 	trained vs Self 		250000	epochs
+16:	135	epsilon = 0.2, 	trained vs RandomvsSelf 	150000	epochs
