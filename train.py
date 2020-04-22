@@ -19,8 +19,8 @@ import numpy as np
 import time
 
 def game_2Agents(agent1, agent2, start_idx = -1, train = True, 
-        time_limit = None, n_games_test = 0,
-        play_checkpoint_usr = False, verbose = False):
+                time_limit = None, n_games_test = 0,
+                play_checkpoint_usr = False, verbose = False):
   """
   Manages a game between 2 agents (agent1, agent2) potentially 
   time-limited, with possibility to train them, to confront 1 of 
@@ -119,9 +119,9 @@ def game_2Agents(agent1, agent2, start_idx = -1, train = True,
       else:
         new_hands = tapnswap.show_hands().copy()
         seq = seq + str(' swapped ' + str(hands[player_idx][0]) + 
-                '-' + str(hands[player_idx][1]) + ' for ' + 
-                str(new_hands[player_idx][0]) + '-' + 
-                str(new_hands[player_idx][1]))
+                        '-' + str(hands[player_idx][1]) + ' for ' + 
+                        str(new_hands[player_idx][0]) + '-' + 
+                        str(new_hands[player_idx][1]))
       print(seq)
       time.sleep(delay)
       print()
@@ -147,7 +147,7 @@ def game_2Agents(agent1, agent2, start_idx = -1, train = True,
       if count_rounds:
         # New state in other's agent point of view
         inv_next_state = [ next_hands[1 - player_idx], 
-                    next_hands[player_idx] ]
+                            next_hands[player_idx] ]
         # Each waiting agent receives the transition with the 
         # response of the environment for the new state
         agents[1 - player_idx].update_Q(prev_state, prev_action, 
@@ -232,7 +232,7 @@ def compare_agents(agent1, agent2, n_games, time_limit = None, verbose = True):
 
 
 def train(n_epochs, epsilon, gamma, load_model, filename, random_opponent, 
-      n_games_test, freq_test, n_skip_games = int(0), verbose = False):
+          n_games_test, freq_test, n_skip_games = int(0), verbose = False):
   """
   Train 2 agents by making them play and learn together. Save the
   learned Q-function into CSV file. It is possible to confront 1 of 
@@ -354,11 +354,11 @@ def train(n_epochs, epsilon, gamma, load_model, filename, random_opponent,
 
     # Start game
     game_over, winner, test_results = game_2Agents(agent1, agent2, 
-                  start_idx = start_idx, train = True, 
-                  time_limit = time_limit, 
-                  n_games_test = n_games_test,
-                  play_checkpoint_usr = play_checkpoint_usr,
-                  verbose = verbose)
+                                    start_idx = start_idx, train = True, 
+                                    time_limit = time_limit, 
+                                    n_games_test = n_games_test,
+                                    play_checkpoint_usr = play_checkpoint_usr,
+                                    verbose = verbose)
     
     assert game_over, str('Game not over but new game' +
                           ' beginning during training')
@@ -397,7 +397,7 @@ if __name__ == "__main__":
   agent2 = RLAgent()
   agent2.load_model('greedy0_6_vsSelf_test')
   results = compare_agents(agent1, agent2, n_games = 10, 
-              time_limit = None, verbose = False)
+                            time_limit = None, verbose = False)
   print(results)
 
 

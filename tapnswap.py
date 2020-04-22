@@ -34,7 +34,7 @@ class TapnSwap:
         Parameters
         ----------
         pair0: int (0 or 1)
-        	Index of pair of hands involved in tapping the other pair.
+          Index of pair of hands involved in tapping the other pair.
         hand0: int (0 or 1)
             Hand's index giving tap action (hand of pair0).
         hand1 : int (0 or 1)
@@ -89,17 +89,17 @@ class TapnSwap:
       Parameter
       ---------
       pair0: int (0 or 1)
-      	Index of pair of hands for which one wants to know 
+        Index of pair of hands for which one wants to know 
         the list of possible tap actions.
 
       Return
       ------
       list_actions: list of possible tap actions.
-      	Each tap action has the form [0, tapping_hand, tapped_hand] 
-      	where:
-      	* tapping_hand: int (0 or 1)
+        Each tap action has the form [0, tapping_hand, tapped_hand] 
+        where:
+        * tapping_hand: int (0 or 1)
             Hand of pair0 involved in tap action.
-      	* tapped_hand: int (0 or 1)
+        * tapped_hand: int (0 or 1)
             Hand of the other pair that receives the 
             tap action of pair0.
       """
@@ -126,9 +126,9 @@ class TapnSwap:
       Return
       ------
       list_actions: list of possible swap actions.
-      	Each swap action has the form [1, giving_hand, exchange_nbr] 
-      	where:
-      	* giving_hand: int (0 or 1) 
+        Each swap action has the form [1, giving_hand, exchange_nbr] 
+        where:
+        * giving_hand: int (0 or 1) 
             Hand of pair 0 that gives some of its fingers 
             to the other hand.
       * exchange_nbr: int
@@ -181,17 +181,17 @@ class TapnSwap:
       Return
       ------
       actions_h: list of possible actions in text format.
-      	Each action has the form 'Tap with fingers_on_tapping_hand on 
-      	fingers_on_tapped_hand' or 'Swap fingers_on_hand0_pair0 -
-      	fingers_on_hand1_pair0 for fingers_on_new_hand0_pair0 -
-      	fingers_on_new_hand1_pair0' where:
-      	* fingers_on_tapping_hand: int
+        Each action has the form 'Tap with fingers_on_tapping_hand on 
+        fingers_on_tapped_hand' or 'Swap fingers_on_hand0_pair0 -
+        fingers_on_hand1_pair0 for fingers_on_new_hand0_pair0 -
+        fingers_on_new_hand1_pair0' where:
+        * fingers_on_tapping_hand: int
             Amount of fingers found on tapping hand before tap action.
-      	* fingers_on_tapped_hand: int
+        * fingers_on_tapped_hand: int
             Amount of fingers on tapped hand before tap action.
-      	* fingers_on_hand[i]_pair0: int
+        * fingers_on_hand[i]_pair0: int
             Amount of fingers found on hand [i] of pair 0 before swap.
-      	* fingers_on_new_hand[i]_pair0: int
+        * fingers_on_new_hand[i]_pair0: int
             Amount of fingers found on hand[i] of pair0 after swap.
       """
 
@@ -229,8 +229,8 @@ class TapnSwap:
       Return
       ------
       list of (unique) possible actions in text format.
-      	Each action has the same format than the output of 
-      	list_actions_h method.
+        Each action has the same format than the output of 
+        list_actions_h method.
       """
 
       actions_h = self.list_actions_h(pair0) 
@@ -246,14 +246,14 @@ class TapnSwap:
         Parameter
         ---------
         pair0: int (0 or 1)
-        	Index of pair of hands for which one wants to know 
+          Index of pair of hands for which one wants to know 
             the list of possible actions.
 
         Return
         ------
         actions: list of unique possible actions.
-        	Each action has the same format than the output of 
-        	list_actions_tap and list_actions_swap methods.
+          Each action has the same format than the output of 
+          list_actions_tap and list_actions_swap methods.
         """
 
         # List of non-unique actions
