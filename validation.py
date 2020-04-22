@@ -239,7 +239,7 @@ class Optimizer:
 						rate_success = 0.99
 					if (not (result[2] == result[3]) or 
 						not (result[1] >= rate_success * result[2])):
-						print('At the end of training, the RL Agent has won' +
+						print('At the end of training, the RL Agent has won ' +
 								'only {}/{} games.'.format(result[1], result[3]))
 						problems.append([epsilon, random_opp])
 
@@ -664,29 +664,36 @@ class Optimizer:
 
 if __name__ == "__main__":
 
-	epsilon_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]	
-
-	optimizer = Optimizer(epsilon_values, random_training = True, 
-							self_training = True, change_opp = True)
-
-	n_epochs = 5000
+	#epsilon_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]	
+	epsilon_values = [0.8]
+	#optimizer = Optimizer(epsilon_values, random_training = True, 
+	#						self_training = True, change_opp = True)
+	optimizer = Optimizer(epsilon_values, random_training = False, 
+							self_training = True, change_opp = False)
+	#n_epochs = 5000
+	n_epochs = 100
 	n_games_test = 10000
 
+	# Define tournaments' names
+	optimizer.tournament_name = 'test0'
+
 	# First training with simple opponents
+	#optimizer.grid_search(n_epochs = n_epochs, n_games_test = n_games_test, 
+	#						freq_test = n_epochs // 5, retrain = False)
 	optimizer.grid_search(n_epochs = n_epochs, n_games_test = n_games_test, 
-							freq_test = n_epochs // 5, retrain = False)
+							freq_test = 1, retrain = False)
 	
 	# Second training with mixed opponents
-	optimizer.grid_search(n_epochs = n_epochs, n_games_test = n_games_test, 
-							freq_test = n_epochs //5, retrain = True)
+	#optimizer.grid_search(n_epochs = n_epochs, n_games_test = n_games_test, 
+	#						freq_test = n_epochs // 5, retrain = True)
 
-	n_epochs = 40000
+	#n_epochs = 40000
 	# Further training for best current models
-	optimizer.retrain_best_models(n_epochs = n_epochs, 
-								common_train_time = False, min_frac = 0.3)
+	#optimizer.retrain_best_models(n_epochs = n_epochs, 
+	#							common_train_time = False, min_frac = 0.3)
 
-	n_epochs = 50000
+	#n_epochs = 50000
 	# Further training for best current models
-	optimizer.retrain_best_models(n_epochs = n_epochs, 
-								common_train_time = False, min_frac = 0.3)
+	#optimizer.retrain_best_models(n_epochs = n_epochs, 
+	#							common_train_time = False, min_frac = 0.3)
 

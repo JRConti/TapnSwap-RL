@@ -81,8 +81,7 @@ def game_2Agents(agent1, agent2, start_idx = -1, train = True,
 		player_idx = np.random.randint(0,2)
 	else:
 		assert start_idx == 0 or start_idx == 1, \
-		('The starting agent index must be 0, 1 or -1. Here it is {}.'.
-														format(start_idx))
+		'The starting agent index must be 0, 1 or -1.'
 		player_idx = start_idx
 
 	agents = [agent1, agent2]
@@ -106,7 +105,7 @@ def game_2Agents(agent1, agent2, start_idx = -1, train = True,
 		# Choose action
 		actions = tapnswap.list_actions(player_idx)
 		action = agents[player_idx].choose_action(state, actions, 
-												greedy = train)
+																							greedy = train)
 		# Take action and get reward
 		reward = tapnswap.take_action(player_idx, action)
 
@@ -152,7 +151,7 @@ def game_2Agents(agent1, agent2, start_idx = -1, train = True,
 				# Each waiting agent receives the transition with the 
 				# response of the environment for the new state
 				agents[1 - player_idx].update_Q(prev_state, prev_action, 
-												- reward, inv_next_state)
+																				- reward, inv_next_state)
 			# Keep in memory previous state and action
 			prev_state = state
 			prev_action = action
@@ -172,8 +171,8 @@ def game_2Agents(agent1, agent2, start_idx = -1, train = True,
 	if bool(n_games_test):
 		random_agent = RandomAgent()
 		test_results = compare_agents(agent1, random_agent, 
-										n_games = n_games_test, 
-										time_limit = None, verbose = False)
+																	n_games = n_games_test, 
+																	time_limit = None, verbose = False)
 
 	return game_over, winner, test_results
 
@@ -214,12 +213,12 @@ def compare_agents(agent1, agent2, n_games, time_limit = None, verbose = True):
 			print(game, '/', n_games)
 
 		game_over, winner, _ = game_2Agents(agent1, agent2, 
-											start_idx = start_idx, 
-											train = False, 
-											time_limit = time_limit, 
-											n_games_test = 0, 
-											play_checkpoint_usr = False, 
-											verbose = False)
+																				start_idx = start_idx, 
+																				train = False, 
+																				time_limit = time_limit, 
+																				n_games_test = 0, 
+																				play_checkpoint_usr = False, 
+																				verbose = False)
 		# Update scores
 		if winner in [0,1]:
 			scores[winner] += 1
@@ -290,7 +289,7 @@ def train(n_epochs, epsilon, gamma, load_model, filename, random_opponent,
 	------
 	learning_results: list
 		Only significant with n_games_test > 0 (otherwise, empty list 
-		by default). List of each n_epochs // 100 epoch test results 
+		by default). List of each n_epochs // freq_test epoch test results 
 		against a Random Agent. Each test result is a list: 
 		[current epoch, score of RL Agent, number of finished games, 
 		n_games test].
@@ -362,7 +361,7 @@ def train(n_epochs, epsilon, gamma, load_model, filename, random_opponent,
 									verbose = verbose)
 		
 		assert game_over, str('Game not over but new game' +
-								' beginning during training')
+													' beginning during training')
 
 		if winner in [0,1]:
 			scores[winner] += 1
@@ -370,9 +369,9 @@ def train(n_epochs, epsilon, gamma, load_model, filename, random_opponent,
 		# Save test games of agent1 against a Random Agent
 		if bool(n_games_test):
 			assert len(test_results) != 0, \
-				'Agent1 has been tested but there is no result of that.'
-			learning_results.append([epoch, test_results[2], test_results[0], 
-															test_results[1]])
+			'Agent1 has been tested but there is no result of that.'
+			learning_results.append([
+									epoch, test_results[2], test_results[0], test_results[1]])
 
 		# Next round
 		start_idx = 1 - start_idx
@@ -381,7 +380,7 @@ def train(n_epochs, epsilon, gamma, load_model, filename, random_opponent,
 	np.savetxt(str('Models/' + filename + '.csv'), agent1.Q, delimiter=',')
 	# Save stats for learning rate of agent1
 	np.savetxt(str('Models/data/count_' + filename + '.csv'), 
-									agent1.count_state_action, delimiter=',')
+							agent1.count_state_action, delimiter=',')
 
 	return learning_results
 

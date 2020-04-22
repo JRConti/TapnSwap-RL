@@ -114,8 +114,8 @@ class RLAgent(Agent):
 
 		# Then build list of states for 2 pairs
 		list_states = [ tuple(( tuple(state_pair0), tuple(state_pair1) ))
-						for state_pair0 in list_states_pair0 
-						for state_pair1 in list_states_pair0 ]
+										for state_pair0 in list_states_pair0 
+										for state_pair1 in list_states_pair0 ]
 
 		# Build dictionary
 		self.state_coder = {state: i for i, state in enumerate(list_states)}
@@ -131,9 +131,9 @@ class RLAgent(Agent):
 
 		# Build list of all actions
 		list_actions_tap = [ tuple([0, i, j]) for i in range(2) 
-											  for j in range(2) ]
+													for j in range(2) ]
 		list_actions_swap = [ tuple([1, i, j]) for i in range(2) 
-											   for j in range(1,3) ]
+													for j in range(1,3) ]
 		list_actions = list_actions_tap + list_actions_swap
 
 		# Build dictionary
@@ -185,11 +185,11 @@ class RLAgent(Agent):
 		# Tupled version of raw_actions
 		raw_actions_t = [ tuple( raw_action ) for raw_action in raw_actions ]	
 		problem_actions = [raw_action_t for raw_action_t in raw_actions_t 
-							if raw_action_t not in self.action_coder.keys() ]
+												if raw_action_t not in self.action_coder.keys() ]
 		assert len(problem_actions) == 0, \
 		'The actions {} are not in dictionary of actions.'.format(problem_actions)
 		return [ self.action_coder[raw_action_t] 
-				for raw_action_t in raw_actions_t ]
+						for raw_action_t in raw_actions_t ]
 
 
 	def decode_action(self, action):
@@ -211,7 +211,7 @@ class RLAgent(Agent):
 		action_t = list(self.action_coder.keys())[
 							list(self.action_coder.values()).index(action)]
 		assert type(action_t) == tuple, \
-				'Several actions returned by RL agent: {}'.format(action_t)
+		'Several actions returned by RL agent: {}'.format(action_t)
 		# Decoding into TapnSwap format
 		return list(action_t)
 
@@ -273,7 +273,7 @@ class RLAgent(Agent):
 		np.random.seed()
 		if np.random.random() <= epsilon:
 			assert greedy == True, \
-							'Agent is epsilon greedy while it should not !'
+			'Agent is epsilon greedy while it should not !'
 			action = self.random_action(actions)
 		
 		# Exploitation
@@ -310,8 +310,9 @@ class RLAgent(Agent):
 		next_state = self.code_state(raw_next_state)
 
 		# Compute Temporal Difference (TD)
-		delta_t = (reward + self.gamma * max( self.Q[next_state, :] ) - 
-														self.Q[state, action])
+		delta_t = (reward + 
+			self.gamma * max(self.Q[next_state, :]) - 
+			self.Q[state, action])
 		# Update learning rate
 		self.count_state_action[state, action] += 1
 		lr = 1.0/float( self.count_state_action[state, action] )
@@ -337,5 +338,5 @@ class RLAgent(Agent):
 
 		# Load arrays as numpy arrays
 		self.Q = np.loadtxt('Models/' + filename + '.csv', delimiter=',')
-		self.count_state_action = np.loadtxt('Models/data/count_' + filename + 
-														'.csv', delimiter=',')
+		self.count_state_action = np.loadtxt(
+			'Models/data/count_' + filename + '.csv', delimiter=',')
