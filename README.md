@@ -81,5 +81,8 @@ The code for the game can be found in:
 ## Training
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f24659dfa4f3d841d9fe84401b2e17e09bb444c
 
