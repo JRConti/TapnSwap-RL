@@ -73,6 +73,311 @@ def options(option1, option2, choice_sent, comeback = False):
   return choice
 
 
+def print_rules():
+  """
+  Display the rules of TapnSwap game on screen.
+  """
+
+  header_screen()
+
+  names = ['Player 1', 'Player 2']
+
+  print('TapnSwap is a 2-player game. Both players have a ' +
+        'variable number of fingers on both of their hands. ' + 
+        'If one player has a hand composed of more than 4 fingers, this ' +
+        'hand is "killed". The goal of the game is to kill both hands of ' +
+        'the opponent player.\n')
+  
+  print('--------------')
+  print(' First round ')
+  print('--------------\n')
+
+  print('Each player starts with 1 finger on each hand and one of them ' +
+        'has to make the first move. The configuration of hands is then:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[0])
+  print('----------------------------')
+  print()
+  print(str(names[1]).center(40))
+  print('  |  '.center(40))
+  print(str(4 * ' ' + \
+            1 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(4 * ' ' + \
+            1 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[0].center(40))
+  print()
+
+  print('Both players are separated from each other by the horizontal line. ' +
+        'The main vertical line separates the hands of both players ' +
+        '(L: left hands, R: right hands). There is currently 1 finger ' +
+        'on each hand of each player.\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  print('----------')
+  print(' Actions ')
+  print('----------\n')
+
+  print('At each round of the game, each player has to choose an action ' +
+        'among the list of possible actions. There are 2 main kinds of ' +
+        'actions: tap and swap.\n')
+
+  print('* Tap actions involve adding the number of fingers on one of ' +
+        'your hands to one of your opponent\'s hands.\n')
+
+  print('For instance, with the previous initial configuration, Player 1 ' +
+        'may tap only with 1 (both of Player 1\'s hands have 1 finger) ' +
+        'on 1 (both of Player 2\'s hands have 1 finger). If it happens, ' +
+        'the configuration of hands at the next round is then:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[1])
+  print('----------------------------')
+  print()
+  print(str(names[0]).center(40))
+  print('  |  '.center(40))
+  print(str(4 * ' ' + \
+            1 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[1].center(40))
+  print()
+
+  print('Player 2 had 1 finger on each hand but Player 1 tapped with 1 ' +
+        'so now Player 2 has one hand with 1+1 = 2 fingers.\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  print('Now let\'s consider a more complex example:\n')
+
+  # Example
+  print('Round of', names[0])
+  print('----------------------------')
+  print()
+  print(str(names[1]).center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            4 *'|' + \
+            1 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(2 * ' ' + \
+            3 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[0].center(40))
+  print()
+
+  print('It is Player 1\'s round. Her hands have respectively 3 and 1 ' +
+        'fingers while Player 2 has hands with 2 and 4 fingers. Player 1 ' +
+        'can then tap with 3 or 1 on a hand of Player 2, that is on 2 or 4.\n')
+
+  print('Player 1 is able to kill the hand of Player 2 with 2 fingers, ' +
+        'by tapping with 3 on 2 (3+2 = 5 > 4). The next round is then:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[1])
+  print('----------------------------')
+  print()
+  print(str(names[0]).center(40))
+  print('  |  '.center(40))
+  print(str(2 * ' ' + \
+            3 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(5 * ' ' + \
+            0 *'|' + \
+            '   |   ' + \
+            4 *'|' + \
+            1 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[1].center(40))
+  print()
+
+  print('Now Player 2 has lost a hand. Notice that Player 1 could have ' +
+        'killed the hand of Player 2 which has 4 fingers instead, in the ' +
+        'same way.\n')
+  
+  print('* Swap actions consist in exchanging some fingers of one of your ' +
+        'hand to the other one.\n')
+
+  print('To illustrate this process, let\'s come back to the previous ' +
+        'complex example:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[0])
+  print('----------------------------')
+  print()
+  print(str(names[1]).center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            4 *'|' + \
+            1 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(2 * ' ' + \
+            3 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[0].center(40))
+  print()
+
+  print('Instead of tapping with 1 or 3, Player 1 may swap some fingers ' +
+        'from one of her hands to the other. By swapping 1 finger, ' +
+        'Player 1 can obtain the configuration of hands 2-2 or 4-0. ' + 
+        'Let\'s look at the first possibility:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[0])
+  print('----------------------------')
+  print()
+  print(str(names[1]).center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            4 *'|' + \
+            1 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            2 *'|' + \
+            3 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[0].center(40))
+  print()
+
+  print('By swapping, Player 1 gets the configuration of hands 2-2. ' +
+        'Changing the hand that loses 1 finger, Player 1 could have ' +
+        'obtained the configuration 4-0.\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  print('There is one main restriction to swap actions: swapping to an ' +
+        'identical but reversed configuration is NOT allowed. For ' +
+        'instance, in this case, Player 1 could not have swapped from ' +
+        '3-1 to 1-3, exchanging 2 fingers.\n')
+
+  print('But it is still possible to exchange 2 fingers. For instance, ' +
+        'a swap from 3-2 to 1-4 is a valid swap.\n')
+
+  print('Note that it is also possible to revive a killed hand:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[0])
+  print('----------------------------')
+  print()
+  print(str(names[1]).center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            0 *'|' + \
+            5 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[0].center(40))
+  print()
+
+  print('In this case, Player 1 has one hand with 2 fingers and a ' +
+        'killed hand. Exchanging 1 finger from the left to the right, ' +
+        'Player 1 may revive the killed hand:\n')
+
+  print('-> Press Enter to continue')
+  input()
+
+  # Example
+  print('Round of', names[0])
+  print('----------------------------')
+  print()
+  print(str(names[1]).center(40))
+  print('  |  '.center(40))
+  print(str(3 * ' ' + \
+            2 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print('L -------------------- R'.center(40))
+  print('  |  '.center(40))
+  print(str(4 * ' ' + \
+            1 *'|' + \
+            '   |   ' + \
+            1 *'|' + \
+            4 * ' ' ).center(40))
+  print('  |  '.center(40))
+  print(names[0].center(40))
+  print()
+
+  print('That\'s all for the rules, thanks !\n')
+
+
 def input_names(n_players):
   """
   Asks user the names of players.
@@ -157,9 +462,7 @@ def game_mngr():
 
   # Rules page
   if int(command) == 2:
-    header_screen()
-    print(str('This page is empty.').center(40))
-    print('\n\n') 
+    print_rules()
     # Go back
     print('Tap 1 to come back to the main menu\n')
     comeback = tap_valid_digits([1])
