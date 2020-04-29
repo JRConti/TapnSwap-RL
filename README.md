@@ -9,7 +9,7 @@ This a personal project I did during the COVID-19 pandemic. It is based on a gam
 ## Requirements
 
 * Python
-* Python basic libraries: numpy, os, time, matplotlib
+* Python basic libraries: numpy, os, time, matplotlib.
 
 
 ## Run the game 
@@ -22,6 +22,12 @@ python TapnSwap-RL/main.py
 ```
 
 The file `main.py` launches the game only, not the training part.
+
+
+## Structure of repository
+
+
+
 
 
 ## Description of the game
@@ -246,9 +252,36 @@ $\delta_t$ is an unbiased estimator of the Bellman error, which quantifies how f
 
 $\hat{Q}(s_t, a_t) = \hat{Q}(s_t, a_t) + \alpha(s_t, a_t)  \delta_t$.
 
-$\alpha(s_t, a_t)$ is the learning rate and should depend on the current state-action pair. Q-learning converges to the optimal policy if all state-action pairs are tried infinitely often with the learning rate 
+$\alpha(s_t, a_t)$ is the learning rate and should depend on the current state-action pair. Q-learning converges a.s. to the optimal Q-function if all state-action pairs are tried infinitely often with the learning rate satisfying Robbins-Monro conditions: I chose in this case $\alpha(s_t, a_t) = \frac{1}{#(s_t, a_t)}$ where $#(s_t, a_t)$ is the number of visits of the state-action pair ($s_t$, $a_t$) from the agent. The decisions of the agent and the updates of the estimator $\hat{Q}$ are coded in file `agent.py`.
 
-# goal of epsilon, Q-learning off-policy method but here random opponent
+The whole process is repeated until the game is over, and for $N$ games. At the end, the near-optimal policy is $\hat{\pi}^\star(s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} \ \hat{Q}(s_t, a)$.
+
+An agent is thus fully determined by the pair ($\epsilon$, $\gamma$) used during training. Note that $\epsilon$ controls the trade-off between exploitation and exploration. 
+
+#### The agent's opponent
+
+The opponent is a significant feature for training as it is the environment in which the agent evolves. In file `train.py`, I implemented 2 different ways of training for an agent: playing against a fully Random Agent or playing against another version of itself. 
+
+Note that usually, Q-learning is an off-policy method, meaning that the agent should adopt an $\epsilon = 1$-greedy policy. However, firstly because of flexibility and secondly because of the influence of $\epsilon$ on the environment (when an agent plays against another version of itself), I chose to allow training for any value of $\epsilon$.
+
+#### Training in practice
+
+In file `train.py`, I implemented a training function that allows to train any agent (determined by $\epsilon$ and $\gamma$) during the number of games (or epochs) you want, either vsRandom (fully Random Agent opponent) or vsSelf (playing against another version of itself). At the end of training, the function saves the learned Q-function in a CSV format located at `Models/filename.csv`. The typo for `filename` I used can be illustrated with an example: the file `Models/greedy_0_1_vsRandom.csv` stores the Q-function of an agent with $\epsilon = 0.1$ training against a Random Agent while the file `Models/greedy_0_4_vsSelf.csv` stores the Q-function of an agent with $\epsilon = 0.4$ training against another version of itself. 
+
+Note that $\gamma$ is not specified in the name of the CSV file because it is not a relevant parameter in our case. Indeed, since the only reward is at the end of the game, there is no need to weight some rewards compared to others.
+
+The previous training function also stores the counter of state-action pairs encountered by an agent during training. For the latter example, the counter is stored at `Models/data/count_greedy_0_4_vsSelf.csv`.
+
+Thus, I allowed the possibility of training an already trained model, importing the learned Q-function and the counter of encountered state-action pairs. It is also possible for the user to play on the shell with the learning agent DURING training as often as you want. In the same way, I allowed the possibility for a learning agent to play any number of games (without training on those) against a fully Random Agent during training, as a kind of evaluation of current training.
+
+
+## Optimizer
+
+
+
+
+  #### vsRandomvsSelf
+
 
 
 
