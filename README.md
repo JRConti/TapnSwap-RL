@@ -272,20 +272,39 @@ Note that $\gamma$ is not specified in the name of the CSV file because it is no
 
 The previous training function also stores the counter of state-action pairs encountered by an agent during training. For the latter example, the counter is stored at `Models/data/count_greedy_0_4_vsSelf.csv`.
 
-Thus, I allowed the possibility of training an already trained model, importing the learned Q-function and the counter of encountered state-action pairs. It is also possible for the user to play on the shell with the learning agent DURING training as often as you want. In the same way, I allowed the possibility for a learning agent to play any number of games (without training on those) against a fully Random Agent during training, as a kind of evaluation of current training.
+Thus, I allowed the possibility of training an already trained model, importing the learned Q-function and the counter of encountered state-action pairs. It is also possible for the user to play on the shell with the learning agent DURING training as often as you want. In the same way, I allowed for a learning agent the possibility to play any number of games (without training on those) against a fully Random Agent during training, as a kind of evaluation of current training.
 
 
 ## Optimizer
 
+The module Optimizer found in file `validation.py` is used as validation step for training agents via Q-learning. Training can be done for many values of $\epsilon$ and for different opponents (Random Agent, Self and all sequences using those two). Indeed, it is possible to initialize the optimizer by setting `change_opp = True`, meaning that after 1 session of training of any agent vsRandom or vsSelf, the agents change their type of opponent for the following session of training. In this way, it is possible to alternate the 2 types of opponents during the whole training. For instance, an agent initialized with $\epsilon = 0.1$ firstly trained vsRandom, then vsSelf, stores its learned Q-function in `Models/greedy_0_1_vsRandomvsSelf.csv`.
+
+The method `grid_search` of module Optimizer computes the fraction of an agent's wins over a given number of games against a Random Agent. This fraction is computed as a function of the number of games used for training the agent. It then provides a way of visualizing the progress made by all trained agents (different values of $\epsilon$ and different opponents). 
+
+For instance, here is what you can get by training an agent with $\epsilon = 0.8$ vs Self during 100 games:
+
+![](training.png)
+
+At each epoch, the training agent has played 10000 games against a Random Agent and the fraction of wins is represented on the y-axis. One can observe that the agent reaches local maxima (different branch - perhaps still a good strategy - than the optimal policy) which may last 20 epochs forming a 'plateau', then performs worse followed by a great progress. Note that at each time that an agent is tested (here and in what follows), it chooses its actions with its version of optimal policy (that is $\epsilon = 0$) so that the parameter $\epsilon$ is only significant during training.
+
+Those testing results obtained during training are stored in a txt file. For the previous example, the results of training are stored in `Models/train/GS_epsilon_0_8_vsSelf.txt`. In those txt files, each line corresponds to an epoch result in the format: epoch, score of training agent, number of finished games, number of played games. Note that, if the training leads to a final score against a Random Agent worse than before the training, the method `grid_search` cancels the training and keeps the past version of the training agent. This may be useful in case of several sessions of training.
+      
+At the end of all trainings, the method `grid_search` simulates a tournament between all trained agents. Each agent plays 10 games against all others and the scores of each model against another 
+are stored in a CSV file located at `Models/results/tournamentK.csv` where K is the number of tournaments the module Optimizer has simulated. A txt file is also generated using the previous CSV file: it displays rankings of each model, alongside its total score against all other models. Those files are located at `Models/results/tournamentK.txt`.
+
+The method `grid_search` has an option `retrain` which, if set to True, does the previous process for already trained models. If the option `change_opp` is also set to True at the initialization of the module Optimizer, the already trained agents are retrained normally (first output) and retrained with a different opponent than before (Random -> Self and Self -> Random) which may be useful to compare agents among which some alternate the type of their opponent.
+
+Looking at the results of 
+those tournaments, it is then possible to retrain some of the trained 
+agents, according to their total score during the tournament.
 
 
 
-  #### vsRandomvsSelf
 
 
 
 
 
+## Conclusion
 
-
-
+optimal policy found when agent does not start, that's why bad policy when agent starts
