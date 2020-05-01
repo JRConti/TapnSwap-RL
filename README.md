@@ -6,7 +6,7 @@
 This a personal project I did during the COVID-19 pandemic. It is based on a game I would often play with friends. An optimal policy is learned via Q-learning and the user may play against the trained agent (difficult level choice).
 
 <p align="center">
-  <img width="460" height="300" src="https://github.com/JRConti/TapnSwap-RL/blob/master/images/preview.png">
+  <img src="https://github.com/JRConti/TapnSwap-RL/blob/master/images/preview.png">
 </p>
 
 ## Requirements
