@@ -5,7 +5,9 @@
 
 This a personal project I did during the COVID-19 pandemic. It is based on a game I would often play with friends. An optimal policy is learned via Q-learning and the user may play against the trained agent (difficult level choice).
 
-![](images/preview.png)
+<p align="center">
+  <img width="460" height="300" src="https://github.com/JRConti/TapnSwap-RL/blob/master/images/preview.png">
+</p>
 
 ## Requirements
 
@@ -296,7 +298,7 @@ The method `grid_search` of module Optimizer computes the fraction of an agent's
 
 For instance, here is what you can get by training an agent with $\epsilon = 0.8$ vs Self during 100 games:
 
-![](images/training.png)
+![Training evolution](images/training.png)
 
 At each epoch, the training agent has played 10000 games against a Random Agent and the fraction of wins is represented on the y-axis. One can observe that the agent reaches local maxima (different branch - perhaps still a good strategy - than the optimal policy) which may last 20 epochs forming a 'plateau', then performs worse followed by a great progress. Note that at each time that an agent is tested (here and in what follows), it chooses its actions with its version of optimal policy (that is $\epsilon = 0$) so that the parameter $\epsilon$ is only significant during training.
 
