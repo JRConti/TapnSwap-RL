@@ -5,6 +5,7 @@
 
 This a personal project I did during the COVID-19 pandemic. It is based on a game I would often play with friends. An optimal policy is learned via Q-learning and the user may play against the trained agent (difficult level choice).
 
+
 <p align="center">
   <img src="https://github.com/JRConti/TapnSwap-RL/blob/master/images/preview.png">
 </p>
@@ -196,7 +197,7 @@ The code for the game can be found in:
 
 ## Training
 
-The training of the agent is done via Q-learning, which is a specific kind of Reinforcement Learning algorithm. In classical Reinforcement Learning, an agent evolves in an environment in the following way: starting from an intial state $s_0$, the agent chooses an action $a_0$, the environment responds to the agent by giving its new state $s_1$ and a reward $r_0$. The same process keeps going for next time steps. At time step $t$, the agent is in state $s_t$, chooses action $a_t$ and gets its next state $s_{t+1}$ and the corresponding reward $r_t$ by the environment. 
+The training of the agent is done via Q-learning, which is a specific kind of Reinforcement Learning algorithm. In classical Reinforcement Learning, an agent evolves in an environment in the following way: starting from an intial state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), the agent chooses an action $a_0$, the environment responds to the agent by giving its new state $s_1$ and a reward $r_0$. The same process keeps going for next time steps. At time step $t$, the agent is in state $s_t$, chooses action $a_t$ and gets its next state $s_{t+1}$ and the corresponding reward $r_t$ by the environment. 
 
 #### The agent and the environment
 
@@ -219,7 +220,7 @@ The current state of the agent is a list of 2-sized lists containing the number 
                    |                    
                  Agent                
 
-the current state of the agent is `[[3,1], [2,4]]`. Note that the lists are firstly (agent then opponent) and secondly ordered (left hand then right hand). The initial state $s_0$ is `[[1,1], [1,1]]`.
+the current state of the agent is `[[3,1], [2,4]]`. Note that the lists are firstly (agent then opponent) and secondly ordered (left hand then right hand). The initial state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24) is `[[1,1], [1,1]]`.
 
 #### Action $a_t$
 
@@ -241,11 +242,11 @@ The most difficult task in Reinforcement Learning is often determining the rewar
 
 #### RL
 
-The agent's actions are determined by its policy $\pi$ (such that $a_t = \pi(s_t)$) which depends only on the current state. For 1 game ending at $t = T$ and starting at state $s_0$, the goal of the agent is to maximize the following quantity w.r.t. $\pi$:
+The agent's actions are determined by its policy $\pi$ (such that $a_t = \pi(s_t)$) which depends only on the current state. For 1 game ending at $t = T$ and starting at state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), the goal of the agent is to maximize the following quantity w.r.t. $\pi$:
 
 $V^\pi(s_0) = \mathbb{E}[\sum_{t=0}^T \ \gamma^t \ r_t \ | \ \pi, \ s_0]$
 
-It is the expected sum of rewards the agent gets starting at $s_0$, following policy \pi. In this case, the expectation is on the new states $s_{t+1}$ given by the environment. The factor gamma gives the significance of first actions over last ones. The optimal policy $\pi^\star$ has value $V^\star = \underset{\pi}{\text{max}} V^\pi$ for all initial states.
+It is the expected sum of rewards the agent gets starting at ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), following policy \pi. In this case, the expectation is on the new states $s_{t+1}$ given by the environment. The factor gamma gives the significance of first actions over last ones. The optimal policy $\pi^\star$ has value $V^\star = \underset{\pi}{\text{max}} V^\pi$ for all initial states.
 
 #### Q-learning
 
@@ -257,7 +258,7 @@ This algorithm approximates the optimal Q-function $Q^\star = \underset{\pi}{\te
 
 The main idea of Q-learning is to build an estimator $\hat{Q}$ of the optimal Q-function $Q^\star$. At the beginning, the agent is initialized with a full-zero matrix $\hat{Q}(s, a)$ for all states $s$ and all actions $a$. Note that, in our case, we are in tabular setting (the number of distinct state-action pairs can be stored in the memory of a computer) so there is no need of Deep Learning. As one can observe from the definitions of states and actions for TapnSwap, there are 5^4 - 1 = 624 distinct states (the -1 is because the state `[[0,0], [0,0]]` is not possible) and 2^2 (tap) + 2 * 2 (all swap actions can be described with 1 or 2 exchanged fingers only) = 8 distinct actions. Thus, the estimator $\hat{Q}$ is a matrix of size 624 * 8.
 
-The training consists in the agent playing $N$ games. For each game, the agent starts at state $s_0$ and, while the game is not over, it takes action $a_t$ at state $s_t$ with $\epsilon$-greedy policy (probability $\epsilon$ of taking action randomly and $1-\epsilon$ of taking current optimal actions $\hat{\pi}^\star (s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} \hat{Q}(s_t, a)$), observes next state $s_{t+1}$ and reward $r_t$. It then computes the Temporal Difference (TD(0)):
+The training consists in the agent playing $N$ games. For each game, the agent starts at state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24) and, while the game is not over, it takes action $a_t$ at state $s_t$ with $\epsilon$-greedy policy (probability $\epsilon$ of taking action randomly and $1-\epsilon$ of taking current optimal actions $\hat{\pi}^\star (s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} \hat{Q}(s_t, a)$), observes next state $s_{t+1}$ and reward $r_t$. It then computes the Temporal Difference (TD(0)):
 
 $\delta_t = r_t + \gamma \underset{a \in \mathcal{A_t}}{\text{max}} \hat{Q}(s_t, a) - \hat{Q}(s_t, a_t)$
 
