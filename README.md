@@ -23,6 +23,9 @@ python TapnSwap-RL/main.py
 
 The file `main.py` launches the game only, not the training part.
 
+When playing in 1-player mode, the (very) easy level makes you play against a fully Random Agent while the difficult level makes you play against an agent trained by Q-learning.
+
+LINUX
 
 ## Structure of repository
 
@@ -279,6 +282,8 @@ Thus, I allowed the possibility of training an already trained model, importing 
 
 The module Optimizer found in file `validation.py` is used as validation step for training agents via Q-learning. Training can be done for many values of $\epsilon$ and for different opponents (Random Agent, Self and all sequences using those two). Indeed, it is possible to initialize the optimizer by setting `change_opp = True`, meaning that after 1 session of training of any agent vsRandom or vsSelf, the agents change their type of opponent for the following session of training. In this way, it is possible to alternate the 2 types of opponents during the whole training. For instance, an agent initialized with $\epsilon = 0.1$ firstly trained vsRandom, then vsSelf, stores its learned Q-function in `Models/greedy_0_1_vsRandomvsSelf.csv`.
 
+#### `grid_search`
+
 The method `grid_search` of module Optimizer computes the fraction of an agent's wins over a given number of games against a Random Agent. This fraction is computed as a function of the number of games used for training the agent. It then provides a way of visualizing the progress made by all trained agents (different values of $\epsilon$ and different opponents). 
 
 For instance, here is what you can get by training an agent with $\epsilon = 0.8$ vs Self during 100 games:
@@ -287,24 +292,41 @@ For instance, here is what you can get by training an agent with $\epsilon = 0.8
 
 At each epoch, the training agent has played 10000 games against a Random Agent and the fraction of wins is represented on the y-axis. One can observe that the agent reaches local maxima (different branch - perhaps still a good strategy - than the optimal policy) which may last 20 epochs forming a 'plateau', then performs worse followed by a great progress. Note that at each time that an agent is tested (here and in what follows), it chooses its actions with its version of optimal policy (that is $\epsilon = 0$) so that the parameter $\epsilon$ is only significant during training.
 
-Those testing results obtained during training are stored in a txt file. For the previous example, the results of training are stored in `Models/train/GS_epsilon_0_8_vsSelf.txt`. In those txt files, each line corresponds to an epoch result in the format: epoch, score of training agent, number of finished games, number of played games. Note that, if the training leads to a final score against a Random Agent worse than before the training, the method `grid_search` cancels the training and keeps the past version of the training agent. This may be useful in case of several sessions of training.
+Those testing results obtained during training are stored in a txt file. For the previous example, the results of training are stored in `Models/train/GS_epsilon_0_8_vsSelf.txt`. In those txt files, each line corresponds to an epoch result in the format: epoch, score of training agent, number of finished games, number of played games. Note that, if the new trained agent loses against its old version (before the training), the method `grid_search` cancels the training and keeps the past version of the training agent. This may be useful in case of several sessions of training.
       
 At the end of all trainings, the method `grid_search` simulates a tournament between all trained agents. Each agent plays 10 games against all others and the scores of each model against another 
 are stored in a CSV file located at `Models/results/tournamentK.csv` where K is the number of tournaments the module Optimizer has simulated. A txt file is also generated using the previous CSV file: it displays rankings of each model, alongside its total score against all other models. Those files are located at `Models/results/tournamentK.txt`.
 
-The method `grid_search` has an option `retrain` which, if set to True, does the previous process for already trained models. If the option `change_opp` is also set to True at the initialization of the module Optimizer, the already trained agents are retrained normally (first output) and retrained with a different opponent than before (Random -> Self and Self -> Random) which may be useful to compare agents among which some alternate the type of their opponent.
+The method `grid_search` has an option `retrain` which, if set to True, does the previous process for already trained models. If the option `change_opp` is also set to True at the initialization of the module Optimizer, the already trained agents are retrained normally (first output) and retrained with a different opponent than before (second output) which may be useful to compare agents among which some alternate the type of their opponent. In this way, if you want to compare trained agents among which some alternate their type of opponent, it is necessary to initialize the Optimizer with `change_opp = True` and then firstly run the method `grid_search` with `retrain = False` (no model already trained for now) and secondly to run it another time but with `retrain = True`. 
 
-Looking at the results of 
-those tournaments, it is then possible to retrain some of the trained 
-agents, according to their total score during the tournament.
+#### `retrain_best_models`
 
+Looking at the results of the tournaments output by the `grid_search` method, it is then possible to retrain some of the trained agents, according to their total score during the previous tournament.
 
+The method `retrain_best_models` looks at the previous tournament ranking txt file and selects some of the best current models according to their total score. The selection is made by keeping the models that have a total score above a given fraction of the best total score.
 
+It is worth noting that the values of $\epsilon$ not represented by the corresponding selected best models are definitely discarded by the Optimizer. Once selected, those models are retrained for a given number of epochs, without playing against a Random Agent during training (as opposed to `grid_search` method), and eventually participate to a tournament, in the same way than before. Note that only the values of $\epsilon$ matter in the participation of agents in the next tournament and not their type of opponent. For instance, if an agent with $\epsilon = 0.1$ previously trained vsRandom has performed very poorly in the previous tournament while, with the same value of $\epsilon but trained vsSelf, it has performed very well, both agents will participate to the tournament output by this method (but only the good one will have been retrained before the tournament).
 
-
-
-
+Since the input and the ouput of `retrain_best_models` are both a tournament ranking txt file, it is possible to run several times this method, each time decreasing the number of selected agents, until you get the number of well-performing agents you want. Note that, because of the input to the `retrain_best_models` method , it is necessary to run the `grid_search` method before, at least once.
 
 ## Conclusion
 
-optimal policy found when agent does not start, that's why bad policy when agent starts
+#### Implementation
+
+In the implementation provided by this repo, I have initialized the module Optimizer with `change_op = True`, meaning that each time that agents are retrained with `the grid_search` method the agents both keep their previous type of opponent and alternate them (leading to 2 more agents output than `for change_opp = False`). The values of $\epsilon$ that I considered were 0.1, 0.2, ..., 0.9, 1.0. The value $\epsilon = 0$ is not really interesting, especially if the agent is trained vsSelf which leads to a null exploration.
+
+Then, I have runned the method `grid_search`, training the agents initialized with the previous values of $\epsilon$ vsRandom and vsSelf for 5000 epochs, testing them each 1000 epochs with 10000 games against a Random Agent. I have re-runned this method with `retrain = True` with the same previous parameters, meaning that I trained the agents normally (for 10000 epochs from the very start) and also changing their opponents (for instance, 5000 epochs vsRandom and then 5000 epochs vsSelf). This allowed me to train agents for all of the previous values of $\epsilon$ vsRandom, vsSelf, vsRandomvsSelf and vsSelfvsRandom, each of them with a total number of training epochs equal to 10000. At the end, the method creates a tournament (`Models/results/tournament2.txt` in this repo) which compares all of current agents. The resulting rankings are strongly stochastic and depend a lot on the chance of having exploring and exploiting enough the trained agents got. This is not a problem since the purpose here is to approach the optimal policy as soon as possible.
+
+After having trained the agents with 4 combinations of opponents (vsRandom, vsSelf, vsRandomvsSelf, vsSelfvsRandom) for 10000 epochs, I have runned the method `retrain_best_models` keeping all agents with a total score above 30% of the max total score in the previous tournament (`Models/results/tournament2.txt` in this repo) and training them for 40000 more epochs. The output is the file `Models/results/tournament3.txt`. 
+
+Finally, I have runned this method 4 more times, each time training the best models during 50000 epochs and reducing the number of best models kept. The last output in this repo is `Models/results/tournament7.txt`. In order to look for the optimal policy, I kept going on my local machine but the total scores of the top 3 best models did not change so I decided to stop. Indeed, playing against the best models at this time showed me that it was enough.
+
+#### Results
+
+In fact, when playing against the previous best agents, I was not able to win if I was the player to make the first move. I think I have tried all possibilities when playing against my top agent (which I chose to be the difficult level on the game menu), without being able to win a single time (if I was the player to make the first move).
+
+This project showed me that this game can be 'cracked', meaning that **there exists a strategy you could always win with, if you don't start**. This was one of my main interrogation about this game and, before this implementation, I was pretty close to the optimal policy since I have played this game a lot. For the sole purpose of discovering this strategy, this project was worth it.
+
+As a consequence, if you let the trained agent start and that you apply the optimal policy, you are sure to win, meaning that all depends on who starts. However, this has led to an unforeseen negative point: in practice, all good performing agents were trained against another version of themselves (vsSelf) at some point (which is not surprising once the exploration is in the good direction) so that, without having found the full optimal policy (meaning that you always win in any configuration), they were able to win if they did not start. Thus, the trained agents that started during the training were sure to lose and did not explore other configurations than the ones explored in their current optimal policy. That's why it may be possible to win if you let the trained agent start, without applying the optimal policy (but not so easy !).
+
+A way of improvement that I did not try is to forbid the optimal strategy (at some point or at the last move) to train agents in other configurations than the ones encountered in the optimal policy.
