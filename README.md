@@ -197,13 +197,13 @@ The code for the game can be found in:
 
 ## Training
 
-The training of the agent is done via Q-learning, which is a specific kind of Reinforcement Learning algorithm. In classical Reinforcement Learning, an agent evolves in an environment in the following way: starting from an intial state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), the agent chooses an action $a_0$, the environment responds to the agent by giving its new state $s_1$ and a reward $r_0$. The same process keeps going for next time steps. At time step $t$, the agent is in state $s_t$, chooses action $a_t$ and gets its next state $s_{t+1}$ and the corresponding reward $r_t$ by the environment. 
+The training of the agent is done via Q-learning, which is a specific kind of Reinforcement Learning algorithm. In classical Reinforcement Learning, an agent evolves in an environment in the following way: starting from an initial state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), the agent chooses an action ![$a_0$](https://render.githubusercontent.com/render/math?math=%24a_0%24), the environment responds to the agent by giving its new state ![$s_1$](https://render.githubusercontent.com/render/math?math=%24s_1%24) and a reward ![$r_0$](https://render.githubusercontent.com/render/math?math=%24r_0%24). The same process keeps going for next time steps. At time step ![$t$](https://render.githubusercontent.com/render/math?math=%24t%24), the agent is in state ![$s_t$](https://render.githubusercontent.com/render/math?math=%24s_t%24), chooses action ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24) and gets its next state ![$s_{t+1}$](https://render.githubusercontent.com/render/math?math=%24s_%7Bt%2B1%7D%24) and the corresponding reward ![$r_t$](https://render.githubusercontent.com/render/math?math=%24r_t%24) by the environment. 
 
 #### The agent and the environment
 
 In a 2-player game like TapnSwap, the agent is one player that should learn the optimal policy (or strategy). The environment is the entity that is impacted by the agent's actions and that responds to the agent by giving its new states and rewards. One trivial choice for the environment is the agent's opponent.
 
-#### Current state $s_t$
+#### Current state ![$s_t$](https://render.githubusercontent.com/render/math?math=%24s_t%24)
 
 The current state of the agent is a list of 2-sized lists containing the number of fingers of each hand. For instance, if the current configuration is:
 
@@ -222,7 +222,7 @@ The current state of the agent is a list of 2-sized lists containing the number 
 
 the current state of the agent is `[[3,1], [2,4]]`. Note that the lists are firstly (agent then opponent) and secondly ordered (left hand then right hand). The initial state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24) is `[[1,1], [1,1]]`.
 
-#### Action $a_t$
+#### Action ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24)
 
 Actions in back-end (file `tapnswap.py`) are represented differently depending on whether they are tap or swap actions.
 
@@ -232,13 +232,13 @@ Swap actions are coded as `[1, giving_hand, exchange_nbr]` where `giving_hand` i
 
 In file `agent.py`, the agent initializes itself by creating an integer coding for all the actions in the previous format. At each time step, the agent gets the list of possible actions, code them in integers, chooses between them and send the decoded chosen action to back-end.
 
-#### Next state $s_{t+1}$
+#### Next state ![$s_{t+1}$](https://render.githubusercontent.com/render/math?math=%24s_%7Bt%2B1%7D%24)
 
-The next state of the agent is given by the environment after that the agent chooses the action $a_t$. It is the configuration of hands obtained after the round of the agent's opponent which follows action $a_t$.
+The next state of the agent is given by the environment after that the agent chooses the action ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24). It is the configuration of hands obtained after the round of the agent's opponent which follows action ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24).
 
-#### Reward $r_t$
+#### Reward ![$r_t$](https://render.githubusercontent.com/render/math?math=%24r_t%24)
 
-The most difficult task in Reinforcement Learning is often determining the rewards corresponding to each transition ($s_t$, $a_t$, $s_{t+1}$). In this game, it is difficult to find such rewards without adding bias to the learning process (which may not be optimal). Indeed, the sole purpose of killing 1 hand might not even be an optimal strategy at all ... Thus, I chose to give non-zero rewards to the agent if and only if the game came to an end (positive reward if game is won, negative reward if game is lost). 
+The most difficult task in Reinforcement Learning is often determining the rewards corresponding to each transition (![$s_t$](https://render.githubusercontent.com/render/math?math=%24s_t%24), ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24), ![$s_{t+1}$](https://render.githubusercontent.com/render/math?math=%24s_%7Bt%2B1%7D%24)). In this game, it is difficult to find such rewards without adding bias to the learning process (which may not be optimal). Indeed, the sole purpose of killing 1 hand might not even be an optimal strategy at all ... Thus, I chose to give non-zero rewards to the agent if and only if the game came to an end (positive reward if game is won, negative reward if game is lost). 
 
 #### RL
 
@@ -246,7 +246,7 @@ The agent's actions are determined by its policy $\pi$ (such that $a_t = \pi(s_t
 
 $V^\pi(s_0) = \mathbb{E}[\sum_{t=0}^T \ \gamma^t \ r_t \ | \ \pi, \ s_0]$
 
-It is the expected sum of rewards the agent gets starting at ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), following policy \pi. In this case, the expectation is on the new states $s_{t+1}$ given by the environment. The factor gamma gives the significance of first actions over last ones. The optimal policy $\pi^\star$ has value $V^\star = \underset{\pi}{\text{max}} V^\pi$ for all initial states.
+It is the expected sum of rewards the agent gets starting at ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24), following policy \pi. In this case, the expectation is on the new states ![$s_{t+1}$](https://render.githubusercontent.com/render/math?math=%24s_%7Bt%2B1%7D%24) given by the environment. The factor gamma gives the significance of first actions over last ones. The optimal policy $\pi^\star$ has value $V^\star = \underset{\pi}{\text{max}} V^\pi$ for all initial states.
 
 #### Q-learning
 
@@ -254,11 +254,11 @@ The Q-function is defined similarly:
 
 $Q^\pi(s_t, a_t) = \mathbb{E}[\sum_{t'=t}^T \ gamma^(t'-t) \ r_{t'} \ | \ \pi, \ s_t, \ a_t]$
 
-This algorithm approximates the optimal Q-function $Q^\star = \underset{\pi}{\text{max}} Q^\pi$. Note that the optimal policy is then given by $\pi^\star(s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} Q^\star(s_t, a)$ where $\mathcal{A_t}$ is the set of possible actions at time $t$.
+This algorithm approximates the optimal Q-function $Q^\star = \underset{\pi}{\text{max}} Q^\pi$. Note that the optimal policy is then given by $\pi^\star(s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} Q^\star(s_t, a)$ where $\mathcal{A_t}$ is the set of possible actions at time ![$t$](https://render.githubusercontent.com/render/math?math=%24t%24).
 
 The main idea of Q-learning is to build an estimator $\hat{Q}$ of the optimal Q-function $Q^\star$. At the beginning, the agent is initialized with a full-zero matrix $\hat{Q}(s, a)$ for all states $s$ and all actions $a$. Note that, in our case, we are in tabular setting (the number of distinct state-action pairs can be stored in the memory of a computer) so there is no need of Deep Learning. As one can observe from the definitions of states and actions for TapnSwap, there are 5^4 - 1 = 624 distinct states (the -1 is because the state `[[0,0], [0,0]]` is not possible) and 2^2 (tap) + 2 * 2 (all swap actions can be described with 1 or 2 exchanged fingers only) = 8 distinct actions. Thus, the estimator $\hat{Q}$ is a matrix of size 624 * 8.
 
-The training consists in the agent playing $N$ games. For each game, the agent starts at state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24) and, while the game is not over, it takes action $a_t$ at state $s_t$ with $\epsilon$-greedy policy (probability $\epsilon$ of taking action randomly and $1-\epsilon$ of taking current optimal actions $\hat{\pi}^\star (s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} \hat{Q}(s_t, a)$), observes next state $s_{t+1}$ and reward $r_t$. It then computes the Temporal Difference (TD(0)):
+The training consists in the agent playing $N$ games. For each game, the agent starts at state ![$s_0$](https://render.githubusercontent.com/render/math?math=%24s_0%24) and, while the game is not over, it takes action ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24) at state ![$s_t$](https://render.githubusercontent.com/render/math?math=%24s_t%24) with $\epsilon$-greedy policy (probability $\epsilon$ of taking action randomly and $1-\epsilon$ of taking current optimal actions $\hat{\pi}^\star (s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} \hat{Q}(s_t, a)$), observes next state ![$s_{t+1}$](https://render.githubusercontent.com/render/math?math=%24s_%7Bt%2B1%7D%24) and reward ![$r_t$](https://render.githubusercontent.com/render/math?math=%24r_t%24). It then computes the Temporal Difference (TD(0)):
 
 $\delta_t = r_t + \gamma \underset{a \in \mathcal{A_t}}{\text{max}} \hat{Q}(s_t, a) - \hat{Q}(s_t, a_t)$
 
@@ -266,7 +266,7 @@ $\delta_t$ is an unbiased estimator of the Bellman error, which quantifies how f
 
 $\hat{Q}(s_t, a_t) = \hat{Q}(s_t, a_t) + \alpha(s_t, a_t)  \delta_t$.
 
-$\alpha(s_t, a_t)$ is the learning rate and should depend on the current state-action pair. Q-learning converges a.s. to the optimal Q-function if all state-action pairs are tried infinitely often with the learning rate satisfying Robbins-Monro conditions: I chose in this case $\alpha(s_t, a_t) = \frac{1}{#(s_t, a_t)}$ where $#(s_t, a_t)$ is the number of visits of the state-action pair ($s_t$, $a_t$) from the agent. The decisions of the agent and the updates of the estimator $\hat{Q}$ are coded in file `agent.py`.
+$\alpha(s_t, a_t)$ is the learning rate and should depend on the current state-action pair. Q-learning converges a.s. to the optimal Q-function if all state-action pairs are tried infinitely often with the learning rate satisfying Robbins-Monro conditions: I chose in this case $\alpha(s_t, a_t) = \frac{1}{#(s_t, a_t)}$ where $#(s_t, a_t)$ is the number of visits of the state-action pair (![$s_t$](https://render.githubusercontent.com/render/math?math=%24s_t%24), ![$a_t$](https://render.githubusercontent.com/render/math?math=%24a_t%24)) from the agent. The decisions of the agent and the updates of the estimator $\hat{Q}$ are coded in file `agent.py`.
 
 The whole process is repeated until the game is over, and for $N$ games. At the end, the near-optimal policy is $\hat{\pi}^\star(s_t) = \underset{a \in \mathcal{A_t}}{\text{argmax}} \ \hat{Q}(s_t, a)$.
 
