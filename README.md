@@ -5,6 +5,7 @@
 
 This a personal project I did during the COVID-19 pandemic. It is based on a game I would often play with friends. An optimal policy is learned via Q-learning and the user may play against the trained agent (difficult level choice).
 
+![](images/preview.png)
 
 ## Requirements
 
@@ -25,12 +26,19 @@ The file `main.py` launches the game only, not the training part.
 
 When playing in 1-player mode, the (very) easy level makes you play against a fully Random Agent while the difficult level makes you play against an agent trained by Q-learning.
 
-LINUX
+The code for the game has been written (and tested) for Linux; there might be some problems with other OS even if the requirements are basic, so let me know if you encounter bugs by submitting an issue.
+
 
 ## Structure of repository
 
-
-
+* `tapnswap.py`: back-end
+* `interact.py`, `main.py`: front-end
+* `agent.py`: defines tha agent's behavior
+* `train.py`, `validation.py`: training and optimization
+* `Models`: saved Q-functions of different models with:
+    * `Models/data`: saved counters of state-action pairs for each agent
+    * `Models/train`: testing results of agents during training
+    * `Models/results`: tournament reports between trained agents
 
 
 ## Description of the game
@@ -288,7 +296,7 @@ The method `grid_search` of module Optimizer computes the fraction of an agent's
 
 For instance, here is what you can get by training an agent with $\epsilon = 0.8$ vs Self during 100 games:
 
-![](training.png)
+![](images/training.png)
 
 At each epoch, the training agent has played 10000 games against a Random Agent and the fraction of wins is represented on the y-axis. One can observe that the agent reaches local maxima (different branch - perhaps still a good strategy - than the optimal policy) which may last 20 epochs forming a 'plateau', then performs worse followed by a great progress. Note that at each time that an agent is tested (here and in what follows), it chooses its actions with its version of optimal policy (that is $\epsilon = 0$) so that the parameter $\epsilon$ is only significant during training.
 
@@ -309,11 +317,12 @@ It is worth noting that the values of $\epsilon$ not represented by the correspo
 
 Since the input and the ouput of `retrain_best_models` are both a tournament ranking txt file, it is possible to run several times this method, each time decreasing the number of selected agents, until you get the number of well-performing agents you want. Note that, because of the input to the `retrain_best_models` method , it is necessary to run the `grid_search` method before, at least once.
 
+
 ## Conclusion
 
 #### Implementation
 
-In the implementation provided by this repo, I have initialized the module Optimizer with `change_op = True`, meaning that each time that agents are retrained with `the grid_search` method the agents both keep their previous type of opponent and alternate them (leading to 2 more agents output than `for change_opp = False`). The values of $\epsilon$ that I considered were 0.1, 0.2, ..., 0.9, 1.0. The value $\epsilon = 0$ is not really interesting, especially if the agent is trained vsSelf which leads to a null exploration.
+In the implementation provided by this repo, I have initialized the module Optimizer with `change_opp = True`, meaning that each time that agents are retrained with `the grid_search` method the agents both keep their previous type of opponent and alternate them (leading to 2 more agents output than `for change_opp = False`). The values of $\epsilon$ that I considered were 0.1, 0.2, ..., 0.9, 1.0. The value $\epsilon = 0$ is not really interesting, especially if the agent is trained vsSelf which leads to a null exploration.
 
 Then, I have runned the method `grid_search`, training the agents initialized with the previous values of $\epsilon$ vsRandom and vsSelf for 5000 epochs, testing them each 1000 epochs with 10000 games against a Random Agent. I have re-runned this method with `retrain = True` with the same previous parameters, meaning that I trained the agents normally (for 10000 epochs from the very start) and also changing their opponents (for instance, 5000 epochs vsRandom and then 5000 epochs vsSelf). This allowed me to train agents for all of the previous values of $\epsilon$ vsRandom, vsSelf, vsRandomvsSelf and vsSelfvsRandom, each of them with a total number of training epochs equal to 10000. At the end, the method creates a tournament (`Models/results/tournament2.txt` in this repo) which compares all of current agents. The resulting rankings are strongly stochastic and depend a lot on the chance of having exploring and exploiting enough the trained agents got. This is not a problem since the purpose here is to approach the optimal policy as soon as possible.
 
@@ -330,3 +339,20 @@ This project showed me that this game can be 'cracked', meaning that **there exi
 As a consequence, if you let the trained agent start and that you apply the optimal policy, you are sure to win, meaning that all depends on who starts. However, this has led to an unforeseen negative point: in practice, all good performing agents were trained against another version of themselves (vsSelf) at some point (which is not surprising once the exploration is in the good direction) so that, without having found the full optimal policy (meaning that you always win in any configuration), they were able to win if they did not start. Thus, the trained agents that started during the training were sure to lose and did not explore other configurations than the ones explored in their current optimal policy. That's why it may be possible to win if you let the trained agent start, without applying the optimal policy (but not so easy !).
 
 A way of improvement that I did not try is to forbid the optimal strategy (at some point or at the last move) to train agents in other configurations than the ones encountered in the optimal policy.
+
+
+## Meta
+
+Jean-Rémy Conti – jean-remy.conti@mines-paristech.fr
+
+Distributed under the GNU license. See LICENSE for more information.
+
+
+## Contributing
+
+1. Fork it (https://github.com/JRConti/TapnSwap-RL/fork)
+2. Create your feature branch: `git checkout -b feature/fooBar`
+3. Commit your changes: `git commit -am 'Add some fooBar'`
+4. Push to the branch: `git push origin feature/fooBar`
+5. Create a new Pull Request
+
