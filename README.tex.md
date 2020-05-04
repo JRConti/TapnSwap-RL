@@ -36,7 +36,7 @@ The code for the game has been written (and tested) for Linux; there might be so
 
 * `tapnswap.py`: back-end
 * `interact.py`, `main.py`: front-end
-* `agent.py`: defines tha agent's behavior
+* `agent.py`: defines the agent's behavior
 * `train.py`, `validation.py`: training and optimization
 * `Models`: saved Q-functions of different models with:
     * `Models/data`: saved counters of state-action pairs for each agent
